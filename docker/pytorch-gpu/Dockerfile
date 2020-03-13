@@ -1,10 +1,7 @@
 FROM pytorch/manylinux-cuda102
 
 WORKDIR /nlp
-RUN pip install transformers
+COPY ./ ./
+RUN python3 -m pip install -r requirements.txt
 
-COPY src src/ 
-COPY data data/
-
-
-CMD ["python", "/nlp/src/run.py"]
+CMD ["python3", "/nlp/src/run.py"]
