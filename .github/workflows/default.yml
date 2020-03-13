@@ -29,8 +29,8 @@ jobs:
         username: neilfern
         password: ${{ secrets.DOCKER_KEY }}
         registry: https://hub.docker.com/repository/docker/neilfern/nlp-cpu
-        dockerfile: $GITHUB_WORKSPACE/docker/pytorch-cpu/Dockerfile
-        workdir: $GITHUB_WORKSPACE/
+        dockerfile: ./docker/pytorch-cpu/Dockerfile
+        #workdir: $GITHUB_WORKSPACE/
         tag_names: ${GITHUB_SHA::8}, latest
         # snapshot: # optional:  
         # buildargs: # optional
