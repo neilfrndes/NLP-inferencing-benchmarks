@@ -1,4 +1,4 @@
-FROM pytorch/manylinux-cuda102
+FROM nvidia/cuda
 
 WORKDIR /nlp
 COPY ./ ./

@@ -15,7 +15,7 @@ parser.add_argument(
     '-m', '--model', type=str, default="sentiment-analysis",
     help="Name of the model file")
 parser.add_argument(
-    '-l', '--loops', type=int, default=30,
+    '-l', '--loops', type=int, default=5,
     help="Number of loops to run inferencing for")
 parser.add_argument(
     '-p', '--processes', type=int, default=multiprocessing.cpu_count(),
@@ -37,7 +37,8 @@ if __name__=='__main__':
     logging.info(f"Reading {file_path}")
     with open(file_path, 'r') as f:
         data = f.readlines()
-    logging.info(f"Read {len(data)} lines")
+    num_lines = len(data)
+    logging.info(f"Read {num_lines} lines")
 
     # Initialize Model
     logging.info(f"Initializing pre trained model for {args.model}")
@@ -45,6 +46,7 @@ if __name__=='__main__':
 
     # Run Infernencing
     run_times = []
+    inference_times = []
     logging.info("Starting Inferencing..")
     for loop in range(1, args.loops+1):
         
@@ -63,14 +65,17 @@ if __name__=='__main__':
 
         total_time = end_time - start_time
         run_times.append(total_time)
+        inference_times.append(total_time*1000/num_lines)
 
         logging.debug(results)
         logging.info(f"Loop #{loop} took {total_time} seconds.")
         
     logging.info("Finished Inferencing.")
     mean, std_dev = calculate_stats(run_times)
-
     logging.info(f"Loops: {len(run_times)} | Time per loop {mean:.2f}s | Standard Deviation {std_dev:.2f}s")
+
+    mean, std_dev = calculate_stats(inference_times)
+    logging.info(f"Time per inference {mean:.2f}ms | Standard Deviation {std_dev:.2f}ms")
 
 
 
