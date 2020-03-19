@@ -42,7 +42,13 @@ if __name__=='__main__':
 
     # Initialize Model
     logging.info(f"Initializing pre trained model for {args.model}")
-    model = pipeline(args.model)
+    if torch.cuda.is_available():
+        # Choose GPU
+        model = pipeline(args.model, device=0)
+        logging.info("Using GPU for inferencing.")
+    else:
+        model = pipeline(args.model, device=-1)
+        logging.info("Using CPU for inferencing.")
 
     # Run Infernencing
     run_times = []
@@ -65,10 +71,12 @@ if __name__=='__main__':
 
         total_time = end_time - start_time
         run_times.append(total_time)
-        inference_times.append(total_time*1000/num_lines)
+        inference_time = total_time*1000/num_lines
+        inference_times.append(inference_time)
 
         logging.debug(results)
-        logging.info(f"Loop #{loop} took {total_time} seconds.")
+        logging.info(f"\nLoop #{loop}/{args.loops} took {total_time} seconds.")
+        logging.info(f"Each inference took {inference_time} miliseconds.")
         
     logging.info("Finished Inferencing.")
     mean, std_dev = calculate_stats(run_times)
