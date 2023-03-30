@@ -23,7 +23,7 @@ jobs:
     - uses: actions/checkout@v2
     
     - name: Publish CPU build to Docker
-      uses: elgohr/Publish-Docker-Github-Action@2.13
+      uses: elgohr/Publish-Docker-Github-Action@v5
       with:
         name: nlp-cpu
         username: neilfern
